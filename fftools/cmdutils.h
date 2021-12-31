@@ -56,6 +56,10 @@ extern int hide_banner;
  */
 void register_exit(void (*cb)(int ret));
 
+void ffmpeg_thread_callback(void (*cb)(int ret));
+
+void ffmpeg_thread_exit();
+
 /**
  * Wraps exit with a program-specific cleanup routine.
  */

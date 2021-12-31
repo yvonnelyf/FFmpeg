@@ -133,12 +133,38 @@ void register_exit(void (*cb)(int ret))
     program_exit = cb;
 }
 
+static void (*ffmpeg_cmd_callback)(int ret);
+
+/**
+ * 注册线程回调
+ */
+void ffmpeg_thread_callback(void (*cb)(int ret)){
+    ffmpeg_cmd_callback = cb;
+}
+
+void ffmpeg_thread_exit(int ret);
+
+/**
+ * 退出线程
+ */
+void ffmpeg_thread_exit(int ret){
+    if (ffmpeg_cmd_callback) {
+        ffmpeg_cmd_callback(ret);
+    }
+    pthread_exit("ffmpeg_thread_exit");
+}
+
+
 void exit_program(int ret)
 {
     if (program_exit)
         program_exit(ret);
 
-    exit(ret);
+    // exit(ret);
+    //退出线程
+    ffmpeg_thread_exit(ret);
+    // pthread_exit("ffmpeg_thread_exit");
+    // ffmpeg_thread_exit(ret);
 }
 
 double parse_number_or_die(const char *context, const char *numstr, int type,
