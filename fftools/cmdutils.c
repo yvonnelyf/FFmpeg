@@ -54,6 +54,7 @@
 #include "libavutil/cpu.h"
 #include "libavutil/ffversion.h"
 #include "libavutil/version.h"
+#include <pthread.h>
 #include "cmdutils.h"
 #if CONFIG_NETWORK
 #include "libavformat/network.h"
